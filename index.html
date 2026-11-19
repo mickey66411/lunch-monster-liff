@@ -1,19 +1,19 @@
 <!doctype html>
-<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>午餐怪獸｜LINE 卡片分享實驗</title>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>午餐怪獸｜B款圖片卡片分享</title>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-<style>body{font-family:system-ui,-apple-system,'Noto Sans TC',sans-serif;background:#f3f7f5;color:#20322c;margin:0;padding:20px}main{max-width:570px;margin:auto}.panel{background:white;border-radius:18px;padding:20px;box-shadow:0 5px 25px #103b2410;margin-bottom:18px}h1{font-size:23px;margin:2px 0 8px;color:#13833e}h2{font-size:17px;margin:0 0 14px}p{line-height:1.6}label{display:block;font-size:13px;font-weight:700;margin:12px 0 5px}input,select{width:100%;box-sizing:border-box;padding:12px;border:1px solid #d1d9d4;border-radius:10px;font-size:16px;background:white}button{border:0;border-radius:11px;padding:13px 16px;background:#16a34a;color:white;font-size:15px;font-weight:750;cursor:pointer}button:disabled{background:#94a3a0;cursor:not-allowed}.secondary{background:white;border:1px solid #16a34a;color:#12813c}.buttons{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.info{font-size:13px;color:#64746c}.preview{border:1px solid #d6e4d9;border-radius:16px;padding:17px;background:#fff}.preview strong{font-size:21px}.preview .green{color:#168443;font-weight:800}.preview .fakebtn{padding:13px;text-align:center;background:#16a34a;color:white;border-radius:9px;margin-top:17px;font-weight:750}.status{padding:12px;border-radius:10px;background:#effaf2;font-size:14px;white-space:pre-line;margin-top:13px}.error{background:#fff1f1;color:#aa2222}.note{font-size:13px;color:#475569}</style></head>
+<style>body{font-family:system-ui,-apple-system,'Noto Sans TC',sans-serif;background:#f3f7f5;color:#20322c;margin:0;padding:20px}main{max-width:570px;margin:auto}.panel{background:white;border-radius:18px;padding:20px;box-shadow:0 5px 25px #103b2410;margin-bottom:18px}h1{font-size:23px;margin:2px 0 8px;color:#13833e}h2{font-size:17px;margin:0 0 14px}p{line-height:1.6}label{display:block;font-size:13px;font-weight:700;margin:12px 0 5px}input,select{width:100%;box-sizing:border-box;padding:12px;border:1px solid #d1d9d4;border-radius:10px;font-size:16px;background:white}button{border:0;border-radius:11px;padding:13px 16px;background:#16a34a;color:white;font-size:15px;font-weight:750;cursor:pointer}button:disabled{background:#94a3a0;cursor:not-allowed}.secondary{background:white;border:1px solid #16a34a;color:#12813c}.buttons{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.info{font-size:13px;color:#64746c}.preview{border:1px solid #d6e4d9;border-radius:16px;padding:17px;background:#fff}.preview strong{font-size:21px}.hero-img{display:block;width:100%;border-radius:11px;margin:0 0 12px;object-fit:cover}.preview .green{color:#168443;font-weight:800}.preview .fakebtn{padding:13px;text-align:center;background:#16a34a;color:white;border-radius:9px;margin-top:17px;font-weight:750}.status{padding:12px;border-radius:10px;background:#effaf2;font-size:14px;white-space:pre-line;margin-top:13px}.error{background:#fff1f1;color:#aa2222}.note{font-size:13px;color:#475569}</style></head>
 <body><main>
-<section class="panel"><h1>🐲 午餐怪獸｜LINE 卡片分享</h1><p class="info">LIFF Share Target Picker 實驗版｜開啟頁面自動連線；分享前仍需選擇群組確認。</p>
+<section class="panel"><h1>🐲 午餐怪獸｜LINE 卡片分享</h1><p class="info">B款可愛怪獸圖片卡片版｜開啟頁面自動連線；分享前仍需選擇群組確認。</p>
 <label for="liffid">LIFF ID（已預設）</label><input id="liffid" value="2012706089-0DIUyWkK" autocomplete="off"/>
 <div class="buttons"><button id="init" type="button">重新連接 LINE LIFF</button></div><div id="status" class="status" role="status">正在自動連接 LINE LIFF…</div></section>
-<section class="panel"><h2>測試卡片資料</h2>
+<section class="panel"><h2>卡片資料（店家與時間可自動帶入）</h2>
 <label for="store">店家</label><input id="store" value="飯家香" maxlength="80" />
 <label for="date">用餐日期</label><input id="date" type="date" />
 <label for="cutoff">截止時間</label><input id="cutoff" type="datetime-local" />
 <label for="url">訂餐網址（需為可對同事開放的 HTTPS 網址）</label><input id="url" type="url" placeholder="https://script.google.com/macros/s/.../exec" />
 <label for="kind">通知類型</label><select id="kind"><option value="open">🐲 開團通知</option><option value="remind">⏰ 截止提醒</option><option value="closed">🔒 已截止通知</option></select>
 <div class="buttons"><button id="share" disabled>分享到 LINE 群組（Flex 卡片）</button><button id="copy" class="secondary">複製文字備用</button></div><p class="note">需在 LINE 分享介面選擇群組並確認；LIFF 不提供無人操作的定時發送。</p></section>
-<section class="panel"><h2>卡片內容預覽</h2><div class="preview"><div class="green" id="pvtitle">🐲 午餐怪獸開團囉！</div><p><strong id="pvstore">飯家香</strong></p><p id="pvdate">📅 用餐日期：</p><p id="pvcutoff">⏰ 截止時間：</p><p id="pvnote">快來看看今天想吃什麼！</p><div class="fakebtn">前往午餐怪獸訂餐</div></div></section>
+<section class="panel"><h2>B款卡片內容預覽</h2><p class="info">插畫為固定圖片；店家、日期、截止時間與訂餐按鈕為 Flex 動態元件。</p><div class="preview"><img class="hero-img" id="pvhero" src="https://mickey66411.github.io/lunch-monster-liff/monster_open.jpg" alt="午餐怪獸開團插畫"/><div class="green" id="pvtitle">🐲 午餐怪獸開團囉！</div><p><strong id="pvstore">飯家香</strong></p><p id="pvdate">📅 用餐日期：</p><p id="pvcutoff">⏰ 截止時間：</p><p id="pvnote">快來看看今天想吃什麼！</p><div class="fakebtn">前往午餐怪獸訂餐</div></div></section>
 <p class="note">測試安全提示：請勿在網址參數中傳送姓名、付款資訊或私人訂單資料。完整 LIFF ID 不是 LINE Channel Secret；不要把 Channel Secret 或 Messaging API Token 放入網頁。</p>
 </main>
 <script>
@@ -28,8 +28,22 @@ if(!params.has('date'))$('date').value=new Date().toLocaleDateString('en-CA');
 if(!params.has('cutoff')){$('cutoff').value=new Date(Date.now()+3600000-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16)}
 
 function values(){let u=$('url').value.trim();let url;try{url=new URL(u)}catch(e){throw Error('請先填入有效的訂餐網址')};if(url.protocol!=='https:')throw Error('訂餐網址必須使用 HTTPS');return {name:$('store').value.trim()||'未命名店家',date:$('date').value,cutoff:$('cutoff').value.replace('T',' '),url:url.href,kind:$('kind').value}}
-function payload(v){const [title,note]=cfg[v.kind]||cfg.open;return {type:'flex',altText:title+'｜'+v.name,contents:{type:'bubble',body:{type:'box',layout:'vertical',spacing:'md',contents:[{type:'text',text:title,weight:'bold',size:'lg',color:'#15803d',wrap:true},{type:'text',text:v.name,weight:'bold',size:'xl',wrap:true},{type:'text',text:'📅 用餐日期：'+v.date,size:'sm',wrap:true,color:'#374151'},{type:'text',text:'⏰ 截止時間：'+v.cutoff,size:'sm',wrap:true,color:'#374151'},{type:'text',text:note,size:'sm',wrap:true,color:'#6b7280'}]},footer:{type:'box',layout:'vertical',contents:[{type:'button',style:'primary',color:'#16a34a',action:{type:'uri',label:'前往午餐怪獸訂餐',uri:v.url}}]}}}}
-function preview(){const v={name:$('store').value,date:$('date').value,cutoff:$('cutoff').value.replace('T',' '),kind:$('kind').value};const a=cfg[v.kind]||cfg.open;$('pvtitle').textContent=a[0];$('pvnote').textContent=a[1];$('pvstore').textContent=v.name;$('pvdate').textContent='📅 用餐日期：'+v.date;$('pvcutoff').textContent='⏰ 截止時間：'+v.cutoff}
+const heroUrls={open:'https://mickey66411.github.io/lunch-monster-liff/monster_open.jpg',remind:'https://mickey66411.github.io/lunch-monster-liff/monster_remind.jpg'};
+function payload(v){
+  const [title,note]=cfg[v.kind]||cfg.open;
+  const lines=[
+    {type:'text',text:v.name,weight:'bold',size:'xl',wrap:true,color:'#172b1e'},
+    {type:'text',text:'📅 用餐日期：'+v.date,size:'sm',wrap:true,color:'#374151'},
+    {type:'text',text:'⏰ 截止時間：'+v.cutoff,size:'sm',wrap:true,color:'#374151'},
+    {type:'separator',margin:'sm'},
+    {type:'text',text:note,size:'sm',wrap:true,color:'#6b7280'}
+  ];
+  const bubble={type:'bubble',size:'mega',body:{type:'box',layout:'vertical',paddingAll:'18px',spacing:'md',contents:lines},footer:{type:'box',layout:'vertical',paddingAll:'14px',contents:[{type:'button',style:'primary',color:'#16a34a',action:{type:'uri',label:v.kind==='remind'?'立即前往訂餐':'前往午餐怪獸訂餐',uri:v.url}}]}};
+  if(heroUrls[v.kind])bubble.hero={type:'image',url:heroUrls[v.kind],size:'full',aspectRatio:'5:3',aspectMode:'cover'};
+  else lines.unshift({type:'text',text:title,weight:'bold',size:'lg',color:'#15803d',wrap:true});
+  return {type:'flex',altText:title+'｜'+v.name+'｜截止 '+v.cutoff,contents:bubble};
+}
+function preview(){const v={name:$('store').value,date:$('date').value,cutoff:$('cutoff').value.replace('T',' '),kind:$('kind').value};const a=cfg[v.kind]||cfg.open;$('pvtitle').textContent=heroUrls[v.kind]?'':a[0];$('pvhero').style.display=heroUrls[v.kind]?'block':'none';if(heroUrls[v.kind])$('pvhero').src=heroUrls[v.kind];$('pvnote').textContent=a[1];$('pvstore').textContent=v.name;$('pvdate').textContent='📅 用餐日期：'+v.date;$('pvcutoff').textContent='⏰ 截止時間：'+v.cutoff}
 ['store','date','cutoff','kind'].forEach(id=>$(id).addEventListener('input',preview));preview();
 let initPromise=null;
 async function connectLiff(){
