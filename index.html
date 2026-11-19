@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>午餐怪獸｜LINE 卡片分享實驗</title>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<style>body{font-family:system-ui,-apple-system,'Noto Sans TC',sans-serif;background:#f3f7f5;color:#20322c;margin:0;padding:20px}main{max-width:570px;margin:auto}.panel{background:white;border-radius:18px;padding:20px;box-shadow:0 5px 25px #103b2410;margin-bottom:18px}h1{font-size:23px;margin:2px 0 8px;color:#13833e}h2{font-size:17px;margin:0 0 14px}p{line-height:1.6}label{display:block;font-size:13px;font-weight:700;margin:12px 0 5px}input,select{width:100%;box-sizing:border-box;padding:12px;border:1px solid #d1d9d4;border-radius:10px;font-size:16px;background:white}button{border:0;border-radius:11px;padding:13px 16px;background:#16a34a;color:white;font-size:15px;font-weight:750;cursor:pointer}button:disabled{background:#94a3a0;cursor:not-allowed}.secondary{background:white;border:1px solid #16a34a;color:#12813c}.buttons{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.info{font-size:13px;color:#64746c}.preview{border:1px solid #d6e4d9;border-radius:16px;padding:17px;background:#fff}.preview strong{font-size:21px}.preview .green{color:#168443;font-weight:800}.preview .fakebtn{padding:13px;text-align:center;background:#16a34a;color:white;border-radius:9px;margin-top:17px;font-weight:750}.status{padding:12px;border-radius:10px;background:#effaf2;font-size:14px;white-space:pre-line;margin-top:13px}.error{background:#fff1f1;color:#aa2222}.note{font-size:13px;color:#475569}</style></head>
+<body><main>
+<section class="panel"><h1>🐲 午餐怪獸｜LINE 卡片分享</h1><p class="info">LIFF Share Target Picker 實驗版｜僅測試手動分享，不觸發機器人推播、不改動訂單。</p>
+<label for="liffid">LIFF ID（至 LINE Developers 建立後填入）</label><input id="liffid" placeholder="例如 2000000000-AbCdEfGh" autocomplete="off"/>
+<div class="buttons"><button id="init">連接 LINE LIFF</button></div><div id="status" class="status" role="status">尚未連接 LIFF。請先填入 LIFF ID。</div></section>
+<section class="panel"><h2>測試卡片資料</h2>
+<label for="store">店家</label><input id="store" value="飯家香" maxlength="80" />
+<label for="date">用餐日期</label><input id="date" type="date" />
+<label for="cutoff">截止時間</label><input id="cutoff" type="datetime-local" />
+<label for="url">訂餐網址（需為可對同事開放的 HTTPS 網址）</label><input id="url" type="url" placeholder="https://script.google.com/macros/s/.../exec" />
+<label for="kind">通知類型</label><select id="kind"><option value="open">🐲 開團通知</option><option value="remind">⏰ 截止提醒</option><option value="closed">🔒 已截止通知</option></select>
+<div class="buttons"><button id="share" disabled>分享到 LINE 群組（Flex 卡片）</button><button id="copy" class="secondary">複製文字備用</button></div><p class="note">需在 LINE 分享介面選擇群組並確認；LIFF 不提供無人操作的定時發送。</p></section>
+<section class="panel"><h2>卡片內容預覽</h2><div class="preview"><div class="green" id="pvtitle">🐲 午餐怪獸開團囉！</div><p><strong id="pvstore">飯家香</strong></p><p id="pvdate">📅 用餐日期：</p><p id="pvcutoff">⏰ 截止時間：</p><p id="pvnote">快來看看今天想吃什麼！</p><div class="fakebtn">前往午餐怪獸訂餐</div></div></section>
+<p class="note">測試安全提示：請勿在網址參數中傳送姓名、付款資訊或私人訂單資料。完整 LIFF ID 不是 LINE Channel Secret；不要把 Channel Secret 或 Messaging API Token 放入網頁。</p>
+</main>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const status=(message,error=false)=>{$('status').textContent=message;$('status').className='status'+(error?' error':'')};
+const cfg={open:['🐲 午餐怪獸開團囉！','快來看看今天想吃什麼！'],remind:['⏰ 午餐怪獸截止提醒','這團即將截止，還沒訂餐的同仁記得把握時間！'],closed:['🔒 午餐怪獸已截止','本團已停止接受新訂單。']};
+const params=new URLSearchParams(location.search);
+for(const [param,id] of [['store','store'],['date','date'],['cutoff','cutoff'],['url','url'],['kind','kind']]){if(params.has(param))$(id).value=params.get(param).slice(0,500)}
+if(!params.has('date'))$('date').value=new Date().toLocaleDateString('en-CA');
+if(!params.has('cutoff')){$('cutoff').value=new Date(Date.now()+3600000-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16)}
+const saved=sessionStorage.getItem('lunchmonster-liff-id');if(saved)$('liffid').value=saved;
+function values(){let u=$('url').value.trim();let url;try{url=new URL(u)}catch(e){throw Error('請先填入有效的訂餐網址')};if(url.protocol!=='https:')throw Error('訂餐網址必須使用 HTTPS');return {name:$('store').value.trim()||'未命名店家',date:$('date').value,cutoff:$('cutoff').value.replace('T',' '),url:url.href,kind:$('kind').value}}
+function payload(v){const [title,note]=cfg[v.kind]||cfg.open;return {type:'flex',altText:title+'｜'+v.name,contents:{type:'bubble',body:{type:'box',layout:'vertical',spacing:'md',contents:[{type:'text',text:title,weight:'bold',size:'lg',color:'#15803d',wrap:true},{type:'text',text:v.name,weight:'bold',size:'xl',wrap:true},{type:'text',text:'📅 用餐日期：'+v.date,size:'sm',wrap:true,color:'#374151'},{type:'text',text:'⏰ 截止時間：'+v.cutoff,size:'sm',wrap:true,color:'#374151'},{type:'text',text:note,size:'sm',wrap:true,color:'#6b7280'}]},footer:{type:'box',layout:'vertical',contents:[{type:'button',style:'primary',color:'#16a34a',action:{type:'uri',label:'前往午餐怪獸訂餐',uri:v.url}}]}}}}
+function preview(){const v={name:$('store').value,date:$('date').value,cutoff:$('cutoff').value.replace('T',' '),kind:$('kind').value};const a=cfg[v.kind]||cfg.open;$('pvtitle').textContent=a[0];$('pvnote').textContent=a[1];$('pvstore').textContent=v.name;$('pvdate').textContent='📅 用餐日期：'+v.date;$('pvcutoff').textContent='⏰ 截止時間：'+v.cutoff}
+['store','date','cutoff','kind'].forEach(id=>$(id).addEventListener('input',preview));preview();
+$('init').addEventListener('click',async()=>{try{const id=$('liffid').value.trim();if(!/^\d+-[a-zA-Z0-9]+$/.test(id))throw Error('LIFF ID 格式不正確，請複製 LINE Developers 的 LIFF ID');if(!window.liff)throw Error('LINE LIFF SDK 未載入，請確認網路連線');sessionStorage.setItem('lunchmonster-liff-id',id);status('正在初始化 LIFF…');await liff.init({liffId:id});if(!liff.isLoggedIn()){status('尚未登入 LINE。請在 LINE 手機版內開啟 LIFF 網址，或按連接後完成登入。');liff.login({redirectUri:location.href});return}const available=liff.isApiAvailable('shareTargetPicker');$('share').disabled=!available;status(available?'LINE LIFF 已連接，可以嘗試分享卡片。':'此環境不支援 Share Target Picker，請用手機 LINE 的 LIFF 網址開啟。',!available)}catch(e){$('share').disabled=true;status('LIFF 連接失敗：'+(e.message||e),true)}});
+$('share').addEventListener('click',async()=>{try{if(!liff.isLoggedIn()||!liff.isApiAvailable('shareTargetPicker'))throw Error('請先成功連接支援分享功能的 LIFF');const v=values();$('share').disabled=true;status('請在 LINE 選擇群組並確認送出…');const result=await liff.shareTargetPicker([payload(v)],{isMultiple:false});status(result?'LINE 回報已完成分享。請至群組確認卡片內容。':'已關閉選擇畫面，可能沒有送出。')}catch(e){status('分享失敗：'+(e.message||e),true)}finally{$('share').disabled=false}});
+$('copy').addEventListener('click',async()=>{try{const v=values();const t=[cfg[v.kind][0],v.name,'📅 用餐日期：'+v.date,'⏰ 截止時間：'+v.cutoff,cfg[v.kind][1],v.url].join('\n');await navigator.clipboard.writeText(t);status('已複製通知文字，可手動貼到 LINE 群組。')}catch(e){status('無法複製，請檢查網址和瀏覽器剪貼簿權限。',true)}});
+})();
+</script></body></html>
